@@ -1,0 +1,131 @@
+# Your snippets
+#
+# Atom snippets allow you to enter a simple prefix in the editor and hit tab to
+# expand the prefix into a larger code block with templated values.
+#
+# You can create a new snippet in this file by typing "snip" and then hitting
+# tab.
+#
+# An example CoffeeScript snippet to expand log to console.log:
+#
+# '.source.coffee':
+#   'Console log':
+#     'prefix': 'log'
+#     'body': 'console.log $1'
+#
+# Each scope (e.g. '.source.coffee' above) can only be declared once.
+#
+# This file uses CoffeeScript Object Notation (CSON).
+# If you are unfamiliar with CSON, you can read more about it in the
+# Atom Flight Manual:
+# http://flight-manual.atom.io/using-atom/sections/basic-customization/#_cson
+
+'.source.cpp':
+  'Sample Robot':
+    'prefix': 'SampleRobot'
+    'body': """
+    #include <iostream>
+    #include <memory>
+    #include <string>
+
+    #include <Joystick.h>
+    #include <SampleRobot.h>
+    #include <RobotDrive.h>
+    #include <Timer.h>
+    #include <CanTalonSRX.h>
+
+    class Robot: public frc::SampleRobot {
+    	frc::RobotDrive myRobot { 0, 1 };
+    	frc::Joystick stick { 0 };
+    	CanTalonSRX actuator { 0 };
+
+    public:
+    	Robot() {
+    		myRobot.SetExpiration(0.1);
+    	}
+
+    	void RobotInit() {
+    		std::cout << "Robot enabled!" << std::endl;
+    	}
+
+    	void Autonomous() {
+    		auto timer = std::make_shared<Timer>();
+    		timer->Start();
+    		while(!IsOperatorControl() && IsEnabled()) {
+    			if(!(timer->Get() >= 10)) {
+    				myRobot.ArcadeDrive(0.4f, 0);
+    			} else {
+    				myRobot.ArcadeDrive((double) 0, 0);
+    				timer->Stop();
+    			}
+    		}
+    		std::cout << "Cleaning autonomous assets" << std::endl;
+    	}
+
+    	void OperatorControl() override {
+    		myRobot.SetSafetyEnabled(true);
+    		while (IsOperatorControl() && IsEnabled()) {
+    			myRobot.TankDrive(stick.GetRawAxis(1), stick.GetRawAxis(5));
+    			actuator.Set(stick.GetRawAxis(2));
+
+    			frc::Wait(0.005);
+    		}
+    	}
+
+    	void Test() override {
+    		while(IsEnabled()) {
+    			if(stick.GetRawButton(1)) {
+    				std::cout << "Button 1 lol" << std::endl;
+    			}
+    		}
+    	}
+    };
+
+    START_ROBOT_CLASS(Robot)
+    """
+  'Command Base H':
+    'prefix': 'HCommand'
+    'body': """
+    #pragma once
+
+    #include <WPILib.h>
+
+    class ${1:name}: public Command {
+    public:
+    	${1:name}();
+    	void Initialize() override;
+    	void Execute() override;
+    	bool IsFinished() override;
+    	void End() override;
+    	void Interrupted() override;
+    };
+    """
+  'Command Base C':
+    'prefix': 'CCommand'
+    'body': """
+    #include "ExampleCommand.h"
+
+    ExampleCommand::ExampleCommand() {
+
+    }
+
+    void ExampleCommand::Initialize() {
+
+    }
+
+    void ExampleCommand::Execute() {
+
+    }
+
+    bool ExampleCommand::IsFinished() {
+        return false;
+    }
+
+    void ExampleCommand::End() {
+
+    }
+
+    void ExampleCommand::Interrupted() {
+
+    }
+    """
