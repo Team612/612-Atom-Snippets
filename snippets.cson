@@ -19,6 +19,7 @@
 # If you are unfamiliar with CSON, you can read more about it in the
 # Atom Flight Manual:
 # http://flight-manual.atom.io/using-atom/sections/basic-customization/#_cson
+# yo mama
 
 '.source.cpp':
   'Sample Robot':
@@ -103,29 +104,59 @@
   'Command Base C':
     'prefix': 'CCommand'
     'body': """
-    #include "ExampleCommand.h"
+    #include "${1:name}.h"
 
-    ExampleCommand::ExampleCommand() {
-
-    }
-
-    void ExampleCommand::Initialize() {
+    ${1:name}::${1:name}() {
 
     }
 
-    void ExampleCommand::Execute() {
+    void ${1:name}::Initialize() {
 
     }
 
-    bool ExampleCommand::IsFinished() {
+    void ${1:name}::Execute() {
+
+    }
+
+    bool ${1:name}::IsFinished() {
         return false;
     }
 
-    void ExampleCommand::End() {
+    void ${1:name}::End() {
 
     }
 
-    void ExampleCommand::Interrupted() {
+    void ${1:name}::Interrupted() {
+
+    }
+    """
+  'Subsystem H':
+    'prefix': 'HSubsystem'
+    'body': """
+    #pragma once
+
+    #include <Commands/Subsystem.h>
+
+    class ${1:name}: public frc::Subsystem {
+    public:
+	   ${1:name}();
+	   void InitDefaultCommand() override;
+
+    private:
+
+    };
+    """
+  'Subsystem C':
+    'prefix': 'CSubsystem'
+    'body': """
+    #include "${1:name}.h"
+
+    ${1:name}::${1:name}() :
+        frc::Subsystem("${1:name}") {
+
+    }
+
+    void ${1:name}::InitDefaultCommand() {
 
     }
     """
