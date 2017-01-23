@@ -29,16 +29,16 @@
     #include <memory>
     #include <string>
 
-    #include <Joystick.h>
-    #include <SampleRobot.h>
-    #include <RobotDrive.h>
-    #include <Timer.h>
-    #include <CanTalonSRX.h>
+    #include "Joystick.h"
+    #include "SampleRobot.h"
+    #include "RobotDrive.h"
+    #include "Timer.h"
+    #include "CanTalon.h"
 
     class Robot: public frc::SampleRobot {
     	frc::RobotDrive myRobot { 0, 1 };
     	frc::Joystick stick { 0 };
-    	CanTalonSRX actuator { 0 };
+    	CANTalon actuator { 0 };
 
     public:
     	Robot() {
@@ -89,7 +89,8 @@
     'body': """
     #pragma once
 
-    #include <WPILib.h>
+    #include "WPILib.h"
+    #include "Commands/Command.h"
 
     class ${1:name}: public Command {
     public:
@@ -135,7 +136,8 @@
     'body': """
     #pragma once
 
-    #include <Commands/Subsystem.h>
+    #incldude "WPILib.h"
+    #include "Commands/Subsystem.h"
 
     class ${1:name}: public frc::Subsystem {
     public:
